@@ -6,7 +6,7 @@ import pygame
 
 from launcher import launcher
 
-player_name = launcher()
+player_name, backgroundskin = launcher()
 print("Ім'я гравця: ", player_name)
 
 # ---ПУГАМЕ НАЛАШТУВАННЯ ---
@@ -47,7 +47,15 @@ def receive():
 font_win = font.Font(None, 72)
 font_main = font.Font(None, 36)
 # --- ЗОБРАЖЕННЯ ----
-background = pygame.image.load("background.png").convert()
+background = pygame.image.load("background1.png").convert()
+if backgroundskin == "1":
+    background = pygame.image.load("background1.png").convert()
+elif backgroundskin == "2":
+    background = pygame.image.load("background2.png").convert()
+elif backgroundskin == "3":
+    background = pygame.image.load("background3.png").convert()
+elif backgroundskin == "4":
+    background = pygame.image.load("background4.png").convert()
 background = transform.scale(background, (WIDTH, HEIGHT))
 # --- ЗВУКИ ---
 
@@ -96,8 +104,19 @@ while True:
 
     if game_state:
         screen.blit(background, (0, 0))
-        draw.rect(screen, (0, 30, 255), (20, game_state['paddles']['0'], 20, 100))
-        draw.rect(screen, (255, 30, 0), (WIDTH - 40, game_state['paddles']['1'], 20, 100))
+        colorP1 = 0, 30, 255
+        colorP2 = 255, 30, 0
+        if backgroundskin == "2":
+            colorP1 = 200, 20, 200
+            colorP2 = 0, 150, 0
+        elif backgroundskin == "3":
+            colorP1 = 0, 30, 255
+            colorP2 = 255, 30, 0
+        elif backgroundskin == "4":
+            colorP1 = 255,255,255
+            colorP2 = 255,255,255
+        draw.rect(screen, colorP1, (20, game_state['paddles']['0'], 20, 100))
+        draw.rect(screen, colorP2, (WIDTH - 40, game_state['paddles']['1'], 20, 100))
         draw.circle(screen, (255, 255, 255), (game_state['ball']['x'], game_state['ball']['y']), 10)
         score_text = font_main.render(f"{game_state['scores'][0]} : {game_state['scores'][1]}", True, (255, 255, 255))
         screen.blit(score_text, (WIDTH // 2 -25, 20))
