@@ -49,9 +49,7 @@ font_main = font.Font(None, 36)
 font_nickname = font.Font(None, 50)
 # --- ЗОБРАЖЕННЯ ----
 background = pygame.image.load("background1.png").convert()
-if backgroundskin == "1":
-    background = pygame.image.load("background1.png").convert()
-elif backgroundskin == "2":
+if backgroundskin == "2":
     background = pygame.image.load("background2.png").convert()
 elif backgroundskin == "3":
     background = pygame.image.load("background3.png").convert()
@@ -59,7 +57,13 @@ elif backgroundskin == "4":
     background = pygame.image.load("background4.png").convert()
 background = transform.scale(background, (WIDTH, HEIGHT))
 # --- ЗВУКИ ---
-
+hitsound = pygame.mixer.Sound("hitsound1.mp3")
+if backgroundskin == "2":
+    hitsound = pygame.mixer.Sound("hitsound2.mp3")
+elif backgroundskin == "3":
+    hitsound = pygame.mixer.Sound("hitsound3.mp3")
+elif backgroundskin == "4":
+    hitsound = pygame.mixer.Sound("hitsound4.mp3")
 # --- ГРА ---
 game_over = False
 winner = None
@@ -123,15 +127,16 @@ while True:
         screen.blit(score_text, (WIDTH // 2 -25, 20))
 
         playername_text = font_nickname.render(player_name, True, (255, 255, 255))
-        screen.blit(playername_text, (WIDTH // 2, 50))
+        screen.blit(playername_text, (WIDTH // 2 -25 , 50))
 
         if game_state['sound_event']:
             if game_state['sound_event'] == 'wall_hit':
-                # звук відбиття м'ячика від стін
-                pass
+                if backgroundskin != "1":
+                    hitsound.play()
+
             if game_state['sound_event'] == 'platform_hit':
-                # звук відбиття м'ячика від платформи
-                pass
+                hitsound.play()
+
 
     else:
         wating_text = font_main.render(f"Очікування гравців...", True, (255, 255, 255))
