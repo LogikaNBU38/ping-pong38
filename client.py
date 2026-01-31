@@ -46,6 +46,7 @@ def receive():
 # --- ШРИФТИ ---
 font_win = font.Font(None, 72)
 font_main = font.Font(None, 36)
+font_nickname = font.Font(None, 50)
 # --- ЗОБРАЖЕННЯ ----
 background = pygame.image.load("background1.png").convert()
 if backgroundskin == "1":
@@ -110,8 +111,8 @@ while True:
             colorP1 = 200, 20, 200
             colorP2 = 0, 150, 0
         elif backgroundskin == "3":
-            colorP1 = 0, 30, 255
-            colorP2 = 255, 30, 0
+            colorP1 = 255, 30, 0
+            colorP2 = 0, 30, 255
         elif backgroundskin == "4":
             colorP1 = 255,255,255
             colorP2 = 255,255,255
@@ -120,6 +121,9 @@ while True:
         draw.circle(screen, (255, 255, 255), (game_state['ball']['x'], game_state['ball']['y']), 10)
         score_text = font_main.render(f"{game_state['scores'][0]} : {game_state['scores'][1]}", True, (255, 255, 255))
         screen.blit(score_text, (WIDTH // 2 -25, 20))
+
+        playername_text = font_nickname.render(player_name, True, (255, 255, 255))
+        screen.blit(playername_text, (WIDTH // 2, 50))
 
         if game_state['sound_event']:
             if game_state['sound_event'] == 'wall_hit':

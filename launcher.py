@@ -73,7 +73,10 @@ def launcher():
 
             display.update()
         elif mode == "Settings":
-            screen.fill((70, 70, 70))
+            screen.fill((60, 60, 60))
+
+            title = font_title.render("НАЛАШТУВАННЯ", True, (180, 50, 0))
+            screen.blit(title, title.get_rect(center=(WIDTH / 2, 40)))
 
             exitsettings_btn = Rect(100, 100, 300, 70)
 
@@ -87,7 +90,7 @@ def launcher():
             draw.rect(screen, (150, 10, 150), skin1_btn, border_radius=12)
             draw.rect(screen, (0, 150, 10), skin2_btn, border_radius=12)
             draw.rect(screen, (100, 120, 30), skin3_btn, border_radius=12)
-            draw.rect(screen, (180, 80, 0), skin4_btn, border_radius=12)
+            draw.rect(screen, (0,0,0), skin4_btn, border_radius=12)
 
             screen.blit(font_btn.render("ПОВЕРНУТИСЯ", True, (0, 0, 0)),
                         font_btn.render("ПОВЕРНУТИСЯ", True, (0, 0, 0)).get_rect(center=exitsettings_btn.center))
@@ -98,8 +101,8 @@ def launcher():
                         font_btn.render("2", True, (0, 0, 0)).get_rect(center=skin2_btn.center))
             screen.blit(font_btn.render("3", True, (0, 0, 0)),
                         font_btn.render("3", True, (0, 0, 0)).get_rect(center=skin3_btn.center))
-            screen.blit(font_btn.render("4", True, (0, 0, 0)),
-                        font_btn.render("4", True, (0, 0, 0)).get_rect(center=skin4_btn.center))
+            screen.blit(font_btn.render("4", True, (255,255,255)),
+                        font_btn.render("4", True, (255,255,255)).get_rect(center=skin4_btn.center))
 
             screen.blit(font_input.render("Вигляд мапи:", True, (255, 255, 255)), (100, 200))
             screen.blit(font_input.render(backgroundskin, True, (255, 255, 255)), (340, 200))
