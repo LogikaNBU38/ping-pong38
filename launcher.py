@@ -1,8 +1,11 @@
 import sys
 
+import pygame
 from pygame import *
 WIDTH, HEIGHT = 500, 500
 
+mixer.init()
+clicksound = pygame.mixer.Sound("hitsound4.mp3")
 def launcher():
     init()
     screen = display.set_mode((WIDTH, HEIGHT))
@@ -13,6 +16,7 @@ def launcher():
     font_input = font.Font(None, 36)
 
     backgroundskin = "1"
+    turnonmusic = True
     input_text = ""
     active_input = False
     mode = "Main"
@@ -52,15 +56,18 @@ def launcher():
 
                 if e.type == MOUSEBUTTONDOWN:
                     if play_btn.collidepoint(e.pos):
-                        return input_text, backgroundskin
+                        clicksound.play()
+                        return input_text, backgroundskin, turnonmusic
 
                     if exit_btn.collidepoint(e.pos):
                         quit()
 
                     if settings_btn.collidepoint(e.pos):
+                        clicksound.play()
                         mode = "Settings"
 
                     if input_box.collidepoint(e.pos):
+                        clicksound.play()
                         active_input = True
                     else:
                         active_input = False
@@ -69,6 +76,7 @@ def launcher():
                     if e.key == K_BACKSPACE:
                         input_text = input_text[:-1]
                     elif len(input_text) < 13:
+                        clicksound.play()
                         input_text += e.unicode
 
             display.update()
@@ -80,10 +88,12 @@ def launcher():
 
             exitsettings_btn = Rect(100, 100, 300, 70)
 
-            skin1_btn = Rect(100, 250, 150, 70)
-            skin2_btn = Rect(250, 250, 150, 70)
-            skin3_btn = Rect(100, 350, 150, 70)
-            skin4_btn = Rect(250, 350, 150, 70)
+            skin1_btn = Rect(100, 225, 150, 70)
+            skin2_btn = Rect(250, 225, 150, 70)
+            skin3_btn = Rect(100, 300, 150, 70)
+            skin4_btn = Rect(250, 300, 150, 70)
+
+            volume_btn = Rect(150, 400, 200, 70)
 
             draw.rect(screen, (180, 80, 0), exitsettings_btn, border_radius=12)
 
@@ -91,6 +101,11 @@ def launcher():
             draw.rect(screen, (0, 150, 10), skin2_btn, border_radius=12)
             draw.rect(screen, (100, 120, 30), skin3_btn, border_radius=12)
             draw.rect(screen, (0,0,0), skin4_btn, border_radius=12)
+
+            if turnonmusic == True:
+                draw.rect(screen, (150, 0, 0), volume_btn, border_radius=12)
+            else:
+                draw.rect(screen, (0, 150, 0), volume_btn, border_radius=12)
 
             screen.blit(font_btn.render("ПОВЕРНУТИСЯ", True, (0, 0, 0)),
                         font_btn.render("ПОВЕРНУТИСЯ", True, (0, 0, 0)).get_rect(center=exitsettings_btn.center))
@@ -103,9 +118,23 @@ def launcher():
                         font_btn.render("3", True, (0, 0, 0)).get_rect(center=skin3_btn.center))
             screen.blit(font_btn.render("4", True, (255,255,255)),
                         font_btn.render("4", True, (255,255,255)).get_rect(center=skin4_btn.center))
+            if turnonmusic == True:
+                screen.blit(font_btn.render("ВИКЛЮЧИТИ", True, (0, 0, 0)),
+                            font_btn.render("ВИКЛЮЧИТИ", True, (0, 0, 0)).get_rect(center=volume_btn.center))
+            else:
+                screen.blit(font_btn.render("УВІМКНУТИ", True, (0, 0, 0)),
+                            font_btn.render("УВІМКНУТИ", True, (0, 0, 0)).get_rect(center=volume_btn.center))
 
-            screen.blit(font_input.render("Вигляд мапи:", True, (255, 255, 255)), (100, 200))
-            screen.blit(font_input.render(backgroundskin, True, (255, 255, 255)), (340, 200))
+            screen.blit(font_input.render("Вигляд мапи:", True, (255, 255, 255)), (100, 175))
+            screen.blit(font_input.render(backgroundskin, True, (255, 255, 255)), (340, 175))
+
+            tc = 0, 150, 0
+            tt = "Аудіо: Увімкнено"
+            if turnonmusic == False:
+                tc = 150, 0, 0
+                tt = "Аудіо: Вимкнено"
+
+            screen.blit(font_input.render(tt, True, tc), (100, 370))
 
             for e in event.get():
                 if e.type == QUIT:
@@ -113,16 +142,28 @@ def launcher():
 
                 if e.type == MOUSEBUTTONDOWN:
                     if exitsettings_btn.collidepoint(e.pos):
+                        clicksound.play()
                         mode = "Main"
 
                     if skin1_btn.collidepoint(e.pos):
+                        clicksound.play()
                         backgroundskin = "1"
                     if skin2_btn.collidepoint(e.pos):
+                        clicksound.play()
                         backgroundskin = "2"
                     if skin3_btn.collidepoint(e.pos):
+                        clicksound.play()
                         backgroundskin = "3"
                     if skin4_btn.collidepoint(e.pos):
+                        clicksound.play()
                         backgroundskin = "4"
+
+                    if volume_btn.collidepoint(e.pos):
+                        clicksound.play()
+                        if turnonmusic == True:
+                            turnonmusic = False
+                        else:
+                            turnonmusic = True
 
             display.update()
 

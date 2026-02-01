@@ -6,7 +6,7 @@ import pygame
 
 from launcher import launcher
 
-player_name, backgroundskin = launcher()
+player_name, backgroundskin, musicvalue = launcher()
 print("Ім'я гравця: ", player_name)
 
 # ---ПУГАМЕ НАЛАШТУВАННЯ ---
@@ -64,6 +64,12 @@ elif backgroundskin == "3":
     hitsound = pygame.mixer.Sound("hitsound3.mp3")
 elif backgroundskin == "4":
     hitsound = pygame.mixer.Sound("hitsound4.mp3")
+winsound = pygame.mixer.Sound("winsound.mp3")
+losssound = pygame.mixer.Sound("losssound.mp3")
+if musicvalue == False:
+    hitsound.set_volume(0)
+    winsound.set_volume(0)
+    losssound.set_volume(0)
 # --- ГРА ---
 game_over = False
 winner = None
@@ -88,8 +94,10 @@ while True:
         if you_winner is None:  # Встановлюємо тільки один раз
             if game_state["winner"] == my_id:
                 you_winner = True
+                winsound.play()
             else:
                 you_winner = False
+                losssound.play()
 
         if you_winner:
             text = "Ти переміг!"
@@ -100,9 +108,9 @@ while True:
         text_rect = win_text.get_rect(center=(WIDTH // 2, HEIGHT // 2))
         screen.blit(win_text, text_rect)
 
-        text = font_win.render('К - рестарт', True, (255, 215, 0))
-        text_rect = text.get_rect(center=(WIDTH // 2, HEIGHT // 2 + 120))
-        screen.blit(text, text_rect)
+        #text = font_win.render('К - рестарт', True, (255, 215, 0))
+        #text_rect = text.get_rect(center=(WIDTH // 2, HEIGHT // 2 + 120))
+        #screen.blit(text, text_rect)
 
         display.update()
         continue  # Блокує гру після перемоги
@@ -111,18 +119,22 @@ while True:
         screen.blit(background, (0, 0))
         colorP1 = 0, 30, 255
         colorP2 = 255, 30, 0
+        ballcolor = 255, 0, 255
         if backgroundskin == "2":
             colorP1 = 200, 20, 200
             colorP2 = 0, 150, 0
+            ballcolor = 0,0,0
         elif backgroundskin == "3":
             colorP1 = 255, 30, 0
             colorP2 = 0, 30, 255
+            ballcolor = 150,150,150
         elif backgroundskin == "4":
             colorP1 = 255,255,255
             colorP2 = 255,255,255
+            ballcolor = 255,255,255
         draw.rect(screen, colorP1, (20, game_state['paddles']['0'], 20, 100))
         draw.rect(screen, colorP2, (WIDTH - 40, game_state['paddles']['1'], 20, 100))
-        draw.circle(screen, (255, 255, 255), (game_state['ball']['x'], game_state['ball']['y']), 10)
+        draw.circle(screen, ballcolor, (game_state['ball']['x'], game_state['ball']['y']), 10)
         score_text = font_main.render(f"{game_state['scores'][0]} : {game_state['scores'][1]}", True, (255, 255, 255))
         screen.blit(score_text, (WIDTH // 2 -25, 20))
 
